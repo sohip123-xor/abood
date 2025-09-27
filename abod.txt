@@ -98,3 +98,13 @@ class TaskStore extends ChangeNotifier {
       _tasks = List.generate(6, (i) {
         return Task(
           id: 'demo-$i',
+          title: ['تعلّم فلاتر', 'كتابة تقرير', 'تنظيف البريد', 'مراجعة كود', 'مقابلة', 'شراء مستلزمات'][i % 6],
+          description: 'وصف للمهمة رقم ${i + 1}',
+          done: i % 3 == 0,
+          dueDate: DateTime.now().add(Duration(days: i)),
+          priority: i % 3,
+        );
+      });
+      notifyListeners();
+    }
+  }
