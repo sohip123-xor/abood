@@ -58,3 +58,13 @@ class HomeScreen extends StatelessWidget {
 }
  
 
+ 
+
+3. detail_screen.dart
+
+ 
+import 'package:flutter/material.dart';
+import '../models/product.dart';
+
+class DetailScreen extends StatelessWidget {
+  @override
