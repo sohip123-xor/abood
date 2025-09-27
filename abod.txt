@@ -138,3 +138,13 @@ class TaskStore extends ChangeNotifier {
   void clearCompleted() {
     _tasks.removeWhere((t) => t.done);
     notifyListeners();
+  }void setThemeMode(ThemeMode mode) {
+    _themeMode = mode;
+    notifyListeners();
+  }
+
+  void setSearchQuery(String q) {
+    _searchQuery = q;
+    notifyListeners();
+  }
+
