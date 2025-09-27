@@ -148,3 +148,13 @@ class TaskStore extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setFilter(TaskFilter f) {
+    _filter = f;
+    notifyListeners();
+  }
+
+  List<Task> filteredTasks() {
+    Iterable<Task> result = _tasks;
+    if (_filter == TaskFilter.pending) {
+      result = result.where((t) => !t.done);
+    } else if (_filter == TaskFilter.completed) {
