@@ -27,3 +27,14 @@ class Task {
     this.description = '',
     this.done = false,
     DateTime? createdAt,
+    this.dueDate,
+    this.priority = 1,
+  }) : createdAt = createdAt ?? DateTime.now();
+
+  Task copyWith({
+    String? id,
+    String? title,
+    String? description,
+    bool? done,
+    DateTime? createdAt,
+    DateTime? dueDate,
