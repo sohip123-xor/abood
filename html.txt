@@ -47,5 +47,14 @@ class HomeScreen extends StatelessWidget {
           final product = products[index];
           return ListTile(
             title: Text(product.name),
-
+            onTap: () {
+              Navigator.pushNamed(context, '/detail', arguments: product);
+            },
+          );
+        },
+      ),
+    );
+  }
+}
  
+
