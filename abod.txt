@@ -158,3 +158,13 @@ class TaskStore extends ChangeNotifier {
     if (_filter == TaskFilter.pending) {
       result = result.where((t) => !t.done);
     } else if (_filter == TaskFilter.completed) {
+      result = result.where((t) => t.done);
+    }
+    if (_searchQuery.trim().isNotEmpty) {
+      final q = _searchQuery.toLowerCase();
+      result = result.where((t) => t.title.toLowerCase().contains(q) || t.description.toLowerCase().contains(q));
+    }
+    // ترتيب: المهم أولًا، ثم الأحدث
+    final sorted = result.toList()
+      ..sort((a, b) {
+        if (b.priority != a.priority) return b.priority.compareTo(a.priority);
