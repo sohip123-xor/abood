@@ -38,3 +38,13 @@ class Task {
     bool? done,
     DateTime? createdAt,
     DateTime? dueDate,
+    int? priority,
+  }) {
+    return Task(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      done: done ?? this.done,
+      createdAt: createdAt ?? this.createdAt,
+      dueDate: dueDate ?? this.dueDate,
+      priority: priority ?? this.priority,
