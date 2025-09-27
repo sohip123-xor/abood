@@ -47,3 +47,14 @@ class s1 extends StatelessWidget {
                       bottom: 0,
                       child: Directionality(textDirection: TextDirection.rtl, child: exim())
                     ),
+                    
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 15,
+                    child: Icon(Icons.camera_alt),
+                  )
+                ],
+              ),
+            ),
+
