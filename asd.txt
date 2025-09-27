@@ -18,3 +18,14 @@ class exim extends StatelessWidget {
 
 class s1 extends StatelessWidget {
   const s1({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "اختبار شامل ",
+          style: TextStyle(
+            fontSize: 30,
+          ),
+
