@@ -18,3 +18,12 @@ class Task {
   String description;
   bool done;
   DateTime createdAt;
+  DateTime? dueDate;
+  int priority; // 0 = low, 1 = med, 2 = high
+
+  Task({
+    required this.id,
+    required this.title,
+    this.description = '',
+    this.done = false,
+    DateTime? createdAt,
