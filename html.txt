@@ -97,3 +97,14 @@ class Product {
  
 
  
+
+5. services/api_service.dart (مثال بسيط)
+
+ 
+// خدمة للتعامل مع API (ممكن تتوسع لاحقاً)
+class ApiService {
+  Future<List<String>> fetchData() async {
+    // مثال على بيانات ثابتة
+    await Future.delayed(Duration(seconds: 2));
+    return ['بيانات 1', 'بيانات 2', 'بيانات 3'];
+  }
