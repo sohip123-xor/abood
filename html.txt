@@ -1,0 +1,146 @@
+1. main.dart
+
+ 
+import 'package:flutter/material.dart';
+import 'home_screen.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'مشروع كبير بفلاتر',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HomeScreen(),
+      routes: {
+        '/detail': (context) => DetailScreen(),
+      },
+    );
+  }
+}
+ 
+
+ 
+
+2. home_screen.dart
+
+ 
+import 'package:flutter/material.dart';
+import '../models/product.dart';
+
+class HomeScreen extends StatelessWidget {
+  final List<Product> products = List.generate(
+    10,
+    (index) => Product(id: index, name: 'منتج $index', description: 'وصف المنتج $index'),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('الصفحة الرئيسية')),
+      body: ListView.builder(
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return ListTile(
+            title: Text(product.name),
+            onTap: () {
+              Navigator.pushNamed(context, '/detail', arguments: product);
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+ 
+
+ 
+
+3. detail_screen.dart
+
+ 
+import 'package:flutter/material.dart';
+import '../models/product.dart';
+
+class DetailScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final Product product = ModalRoute.of(context)!.settings.arguments as Product;
+
+    return Scaffold(
+      appBar: AppBar(title: Text(product.name)),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(product.description),
+      ),
+    );
+  }
+}
+ 
+
+ 
+
+4. models/product.dart
+
+ 
+class Product {
+  final int id;
+  final String name;
+  final String description;
+
+  Product({required this.id, required this.name, required this.description});
+}
+ 
+
+ 
+
+5. services/api_service.dart (مثال بسيط)
+
+ 
+// خدمة للتعامل مع API (ممكن تتوسع لاحقاً)
+class ApiService {
+  Future<List<String>> fetchData() async {
+    // مثال على بيانات ثابتة
+    await Future.delayed(Duration(seconds: 2));
+    return ['بيانات 1', 'بيانات 2', 'بيانات 3'];
+  }
+}
+ 
+
+ 
+
+6. widgets/custom_button.dart
+
+ 
+import 'package:flutter/material.dart';
+
+class CustomButton extends StatelessWidget {
+  final String title;
+  final VoidCallback onPressed;
+
+  const CustomButton({required this.title, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(title),
+    );
+  }
+}
+ 
+
+ 
+
+7. utils/formatter.dart
+
+ 
+// مثال على مساعدة تنسيق التاريخ أو النصوص
+String formatDate(DateTime date) {
+  return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+}
+ 
