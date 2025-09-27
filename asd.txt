@@ -8,3 +8,13 @@ void main() {
 class exim extends StatelessWidget {
   const exim({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Directionality(textDirection: TextDirection.rtl, child: s1()),
+    );
+  }
+}
+
+class s1 extends StatelessWidget {
+  const s1({super.key});
