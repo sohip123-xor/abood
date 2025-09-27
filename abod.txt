@@ -78,3 +78,23 @@ class Task {
   String toJson() => json.encode(toMap());
 
   factory Task.fromJson(String source) => Task.fromMap(json.decode(source));
+}
+
+/// حالة التطبيق (بدون حزم خارجية، نستخدم ChangeNotifier بسيط)
+class TaskStore extends ChangeNotifier {
+  List<Task> _tasks = [];
+  ThemeMode _themeMode = ThemeMode.system;
+  String _searchQuery = '';
+  TaskFilter _filter = TaskFilter.all;
+
+  List<Task> get tasks => List.unmodifiable(_tasks);
+  ThemeMode get themeMode => _themeMode;
+  String get searchQuery => _searchQuery;
+  TaskFilter get filter => _filter;
+
+  // مؤقت: محاكاة تحميل ابتدائي
+  Future<void> initDemoIfEmpty() async {
+    if (_tasks.isEmpty) {
+      _tasks = List.generate(6, (i) {
+        return Task(
+          id: 'demo-$i',
