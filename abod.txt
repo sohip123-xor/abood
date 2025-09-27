@@ -68,3 +68,13 @@ class Task {
       id: map['id'] ?? '',
       title: map['title'] ?? '',
       description: map['description'] ?? '',
+      done: map['done'] ?? false,
+      createdAt: DateTime.tryParse(map['createdAt'] ?? '') ?? DateTime.now(),
+      dueDate: map['dueDate'] != null ? DateTime.tryParse(map['dueDate']) : null,
+      priority: map['priority'] ?? 1,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Task.fromJson(String source) => Task.fromMap(json.decode(source));
