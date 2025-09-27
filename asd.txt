@@ -37,4 +37,13 @@ class s1 extends StatelessWidget {
           children: [
             Container(
               alignment: Alignment.center,
-
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 60,
+                    child: Positioned(
+                      right: 3,
+                      bottom: 0,
+                      child: Directionality(textDirection: TextDirection.rtl, child: exim())
+                    ),
