@@ -168,3 +168,13 @@ class TaskStore extends ChangeNotifier {
     final sorted = result.toList()
       ..sort((a, b) {
         if (b.priority != a.priority) return b.priority.compareTo(a.priority);
+        return b.createdAt.compareTo(a.createdAt);
+      });
+    return sorted;
+  }
+
+  String exportJson() {
+    final list = _tasks.map((t) => t.toMap()).toList();
+    return json.encode(list);
+  }
+
