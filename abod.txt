@@ -178,3 +178,13 @@ class TaskStore extends ChangeNotifier {
     return json.encode(list);
   }
 
+  void importJson(String jsonString) {
+    final raw = json.decode(jsonString);
+    if (raw is List) {
+      _tasks = raw.map((e) => Task.fromMap(Map<String, dynamic>.from(e))).toList();
+      notifyListeners();
+    }
+  }
+}
+
+enum TaskFilter { all, pending, completed }
