@@ -1,0 +1,140 @@
+// main.dart
+// تطبيق Flutter: مدير مهام بسيط مع واجهة حديثة، ثيم فاتح/داكن، بحث، فلتر، وإمكانيات تصدير.
+// الملف مصمم ليكون ملفًا واحدًا كاملًا وسهل التعديل.
+
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(TaskManagerApp());
+}
+
+/// نموذج بيانات لمهمة
+class Task {
+  String id;
+  String title;
+  String description;
+  bool done;
+  DateTime createdAt;
+  DateTime? dueDate;
+  int priority; // 0 = low, 1 = med, 2 = high
+
+  Task({
+    required this.id,
+    required this.title,
+    this.description = '',
+    this.done = false,
+    DateTime? createdAt,
+    this.dueDate,
+    this.priority = 1,
+  }) : createdAt = createdAt ?? DateTime.now();
+
+  Task copyWith({
+    String? id,
+    String? title,
+    String? description,
+    bool? done,
+    DateTime? createdAt,
+    DateTime? dueDate,
+    int? priority,
+  }) {
+    return Task(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      done: done ?? this.done,
+      createdAt: createdAt ?? this.createdAt,
+      dueDate: dueDate ?? this.dueDate,
+      priority: priority ?? this.priority,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'done': done,
+      'createdAt': createdAt.toIso8601String(),
+      'dueDate': dueDate?.toIso8601String(),
+      'priority': priority,
+    };
+  }
+
+  factory Task.fromMap(Map<String, dynamic> map) {
+    return Task(
+      id: map['id'] ?? '',
+      title: map['title'] ?? '',
+      description: map['description'] ?? '',
+      done: map['done'] ?? false,
+      createdAt: DateTime.tryParse(map['createdAt'] ?? '') ?? DateTime.now(),
+      dueDate: map['dueDate'] != null ? DateTime.tryParse(map['dueDate']) : null,
+      priority: map['priority'] ?? 1,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Task.fromJson(String source) => Task.fromMap(json.decode(source));
+}
+
+/// حالة التطبيق (بدون حزم خارجية، نستخدم ChangeNotifier بسيط)
+class TaskStore extends ChangeNotifier {
+  List<Task> _tasks = [];
+  ThemeMode _themeMode = ThemeMode.system;
+  String _searchQuery = '';
+  TaskFilter _filter = TaskFilter.all;
+
+  List<Task> get tasks => List.unmodifiable(_tasks);
+  ThemeMode get themeMode => _themeMode;
+  String get searchQuery => _searchQuery;
+  TaskFilter get filter => _filter;
+
+  // مؤقت: محاكاة تحميل ابتدائي
+  Future<void> initDemoIfEmpty() async {
+    if (_tasks.isEmpty) {
+      _tasks = List.generate(6, (i) {
+        return Task(
+          id: 'demo-$i',
+          title: ['تعلّم فلاتر', 'كتابة تقرير', 'تنظيف البريد', 'مراجعة كود', 'مقابلة', 'شراء مستلزمات'][i % 6],
+          description: 'وصف للمهمة رقم ${i + 1}',
+          done: i % 3 == 0,
+          dueDate: DateTime.now().add(Duration(days: i)),
+          priority: i % 3,
+        );
+      });
+      notifyListeners();
+    }
+  }
+
+  void addTask(Task t) {
+    _tasks.insert(0, t);
+    notifyListeners();
+  }
+
+  void updateTask(String id, Task updated) {
+    final idx = _tasks.indexWhere((t) => t.id == id);
+    if (idx != -1) {
+      _tasks[idx] = updated;
+      notifyListeners();
+    }
+  }
+
+  void removeTask(String id) {
+    _tasks.removeWhere((t) => t.id == id);
+    notifyListeners();
+  }
+
+  void toggleDone(String id) {
+    final idx = _tasks.indexWhere((t) => t.id == id);
+    if (idx != -1) {
+      _tasks[idx] = _tasks[idx].copyWith(done: !_tasks[idx].done);
+      notifyListeners();
+    }
+  }
+
+  void clearCompleted() {
+    _tasks.removeWhere((t) => t.done);
+    notifyListeners();
